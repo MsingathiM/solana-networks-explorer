@@ -1,4 +1,4 @@
-# = Solana Explorer - Vibe Coded Edition
+# ğŸŒŸ Solana Networks Explorer
 
 A beautiful, modern Solana blockchain explorer built with React and Solana Web3.js. This project was **vibe coded** using Claude Code - built through iterative design conversations focusing on aesthetics and user experience rather than rigid specifications.
 
@@ -6,41 +6,41 @@ A beautiful, modern Solana blockchain explorer built with React and Solana Web3.
 ![React](https://img.shields.io/badge/React-18.2.0-blue)
 ![Solana](https://img.shields.io/badge/Solana-Web3.js-purple)
 
-## ( What is Vibe Coding?
+## ğŸ¨ What is Vibe Coding?
 
 This project exemplifies **vibe coding** - a development approach where:
-- <¨ Design decisions are made based on aesthetic preferences and "vibes"
-- =ã Implementation happens through conversational iteration
-- =€ Features emerge organically through user feedback
-- <¯ The focus is on feel and user experience over technical specifications
+- âœ¨ Design decisions are made based on aesthetic preferences and "vibes"
+- ğŸ”„ Implementation happens through conversational iteration
+- ğŸŒ± Features emerge organically through user feedback
+- ğŸ’« The focus is on feel and user experience over technical specifications
 
-## =€ Features
+## ğŸš€ Features
 
-### < Multi-Network Support
+### ğŸŒ Multi-Network Support
 - **Mainnet**: Production Solana network
 - **Testnet**: Testing environment
 - **Devnet**: Development network
 - Seamless network switching with live data
 
-### = Comprehensive Search
+### ğŸ” Comprehensive Search
 - **Transaction Lookup**: Search by transaction signature (88 chars)
 - **Account Exploration**: Explore accounts by address (32-44 chars)
 - **Real-time Validation**: Instant feedback on input format
 - **Quick Examples**: Pre-loaded program addresses for testing
 
-### =Ê Live Network Stats
+### ğŸ“Š Live Network Stats
 - **Current Epoch**: Real-time epoch information
 - **Current Slot**: Live slot tracking
 - **Slots per Epoch**: Network timing data
 - **Network Health**: Connection status monitoring
 
-### =Ë Recent Activity
+### ğŸ“ˆ Recent Activity
 - **Recent Transactions**: Live transaction feed
 - **Interactive History**: Click to explore any transaction
 - **Status Indicators**: Success/failure visual feedback
 - **Auto-refresh**: Stay up-to-date with network activity
 
-## <¨ Design Philosophy
+## ğŸ¨ Design Philosophy
 
 ### Dark Grey Aesthetic
 - **Professional Look**: Dark grey backgrounds with light borders
@@ -57,7 +57,7 @@ This project exemplifies **vibe coding** - a development approach where:
 - **Clear Hierarchy**: Visual separation between different features
 - **Responsive Design**: Works on all screen sizes
 
-## =à Tech Stack
+## âš¡ Tech Stack
 
 - **Frontend**: React 18.2.0 + Vite
 - **Styling**: Tailwind CSS with custom components
@@ -66,7 +66,7 @@ This project exemplifies **vibe coding** - a development approach where:
 - **Blockchain**: Solana Web3.js
 - **Security**: Helmet, CORS, Rate limiting
 
-## =€ Quick Start
+## ğŸ›  Quick Start
 
 ### Prerequisites
 - Node.js (v16+)
@@ -75,8 +75,8 @@ This project exemplifies **vibe coding** - a development approach where:
 ### Installation
 ```bash
 # Clone the repository
-git clone <your-repo-url>
-cd solana-testnet-explorer
+git clone https://github.com/MsingathiM/solana-networks-explorer.git
+cd solana-networks-explorer
 
 # Install all dependencies
 npm run install:all
@@ -97,7 +97,7 @@ npm run build           # Build client for production
 npm start              # Start production server
 ```
 
-## =á API Endpoints
+## ğŸ“¡ API Endpoints
 
 ### Network Information
 ```bash
@@ -121,7 +121,7 @@ GET /api/recent-transactions?network=testnet&limit=10
 GET /api/health               # Server health status
 ```
 
-## <¨ Vibe Coding Process
+## ğŸ’­ Vibe Coding Process
 
 This project was built through a collaborative conversation focusing on:
 
@@ -133,14 +133,14 @@ This project was built through a collaborative conversation focusing on:
 
 Each change was implemented immediately with visual feedback, creating a natural development flow.
 
-## < What Makes This Special
+## âœ¨ What Makes This Special
 
 - **Conversational Development**: Built through natural language iteration
 - **Aesthetic-First Approach**: Design decisions based on visual appeal
 - **Immediate Feedback**: Real-time implementation of design ideas
 - **Organic Evolution**: Features emerged through usage and feedback
 
-## > Contributing
+## ğŸ¤ Contributing
 
 This is a vibe coding project! Feel free to:
 - Suggest aesthetic improvements
@@ -148,10 +148,10 @@ This is a vibe coding project! Feel free to:
 - Improve the user experience
 - Keep the conversational development spirit
 
-## =Ä License
+## ğŸ“„ License
 
 MIT License - Feel free to vibe with this code!
 
 ---
 
-**( Vibe coded with [Claude Code](https://claude.ai/code) - Where ideas meet implementation through pure vibes <¨**
+**âœ¨ Vibe coded with [Claude Code](https://claude.ai/code) - Where ideas meet implementation through pure vibes ğŸ¨**
