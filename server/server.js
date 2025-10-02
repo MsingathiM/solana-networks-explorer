@@ -7,6 +7,28 @@ const { Connection, PublicKey, LAMPORTS_PER_SOL } = require('@solana/web3.js');
 const app = express();
 const PORT = process.env.PORT || 5001; // CHANGED FROM 5000 TO 5001
 
+// Simple in-memory cache to reduce redundant requests
+const cache = new Map();
+const CACHE_TTL = 30000; // 30 seconds
+
+function getCached(key) {
+  const cached = cache.get(key);
+  if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+    return cached.data;
+  }
+  cache.delete(key);
+  return null;
+}
+
+function setCache(key, data) {
+  cache.set(key, { data, timestamp: Date.now() });
+  // Clean old cache entries
+  if (cache.size > 100) {
+    const oldestKey = cache.keys().next().value;
+    cache.delete(oldestKey);
+  }
+}
+
 // Middleware
 app.use(helmet());
 app.use(cors());
@@ -26,12 +48,16 @@ const NETWORKS = {
   'devnet': 'https://api.devnet.solana.com'
 };
 
-// Create connections for each network
+// Create connections for each network with optimized settings
 const connections = {};
 Object.entries(NETWORKS).forEach(([network, rpcUrl]) => {
   connections[network] = new Connection(rpcUrl, {
-    commitment: 'confirmed',
-    confirmTransactionInitialTimeout: 60000
+    commitment: 'processed', // Use 'processed' for faster responses
+    confirmTransactionInitialTimeout: 30000, // Reduce timeout
+    disableRetryOnRateLimit: false, // Enable built-in retry logic
+    httpHeaders: {
+      'User-Agent': 'SolanaExplorer/1.0.0'
+    }
   });
 });
 
@@ -58,6 +84,15 @@ app.get('/api/transaction/:signature', async (req, res) => {
   try {
     const { signature } = req.params;
     const network = req.query.network || 'testnet';
+    const cacheKey = `tx:${signature}:${network}`;
+
+    // Check cache first
+    const cached = getCached(cacheKey);
+    if (cached) {
+      console.log(`Cache hit for transaction: ${signature} on ${network}`);
+      return res.json(cached);
+    }
+
     console.log(`Fetching transaction: ${signature} on ${network}`);
 
     // Validate signature format (Solana signatures are base58 encoded and typically 88 characters)
@@ -69,7 +104,7 @@ app.get('/api/transaction/:signature', async (req, res) => {
 
     const networkConnection = getConnection(network);
     const transaction = await networkConnection.getTransaction(signature, {
-      commitment: 'confirmed',
+      commitment: 'processed', // Use processed for faster response
       maxSupportedTransactionVersion: 0
     });
 
@@ -79,11 +114,11 @@ app.get('/api/transaction/:signature', async (req, res) => {
 
     console.log('Transaction found:', transaction.slot);
 
-    res.json({
+    const result = {
       signature: signature,
       slot: transaction.slot,
       blockTime: transaction.blockTime,
-      confirmationStatus: 'confirmed',
+      confirmationStatus: 'processed',
       fee: transaction.meta.fee / LAMPORTS_PER_SOL,
       status: transaction.meta.err ? 'failed' : 'success',
       network: network,
@@ -92,7 +127,11 @@ app.get('/api/transaction/:signature', async (req, res) => {
         instructions: transaction.transaction.message.instructions.length,
         logs: transaction.meta.logMessages || []
       }
-    });
+    };
+
+    // Cache the result
+    setCache(cacheKey, result);
+    res.json(result);
   } catch (error) {
     console.error('Error fetching transaction:', error.message);
 
@@ -110,6 +149,15 @@ app.get('/api/account/:address', async (req, res) => {
   try {
     const { address } = req.params;
     const network = req.query.network || 'testnet';
+    const cacheKey = `acc:${address}:${network}`;
+
+    // Check cache first
+    const cached = getCached(cacheKey);
+    if (cached) {
+      console.log(`Cache hit for account: ${address} on ${network}`);
+      return res.json(cached);
+    }
+
     console.log(`Fetching account: ${address} on ${network}`);
 
     // Validate address format (Solana addresses are base58 encoded and typically 32-44 characters)
@@ -135,14 +183,18 @@ app.get('/api/account/:address', async (req, res) => {
       networkConnection.getAccountInfo(publicKey)
     ]);
 
-    res.json({
+    const result = {
       address: address,
       balance: balance / LAMPORTS_PER_SOL,
       executable: accountInfo?.executable || false,
       owner: accountInfo?.owner.toString() || '',
       dataSize: accountInfo?.data.length || 0,
       network: network
-    });
+    };
+
+    // Cache the result (shorter TTL for balance as it changes frequently)
+    setCache(cacheKey, result);
+    res.json(result);
   } catch (error) {
     console.error('Error fetching account:', error.message);
 
